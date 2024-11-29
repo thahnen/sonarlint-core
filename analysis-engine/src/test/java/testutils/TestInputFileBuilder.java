@@ -20,7 +20,6 @@
 package testutils;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -59,29 +58,9 @@ public class TestInputFileBuilder {
   private int lines = -1;
   private int[] originalLineStartOffsets = new int[0];
   private int lastValidOffset = -1;
-  private String contents;
-
-  /**
-   * Create a InputFile with a given module key and module base directory.
-   * The relative path is generated comparing the file path to the module base directory.
-   * filePath must point to a file that is within the module base directory.
-   */
-  public TestInputFileBuilder(File baseDir, File filePath) {
-    var relativePathStr = baseDir.toPath().relativize(filePath.toPath()).toString();
-    setBaseDir(baseDir.toPath());
-    this.relativePath = PathUtils.sanitize(relativePathStr);
-  }
 
   public TestInputFileBuilder(String relativePath) {
     this.relativePath = PathUtils.sanitize(relativePath);
-  }
-
-  public static TestInputFileBuilder create(File moduleBaseDir, File filePath) {
-    return new TestInputFileBuilder(moduleBaseDir, filePath);
-  }
-
-  public static TestInputFileBuilder create(String relativePath) {
-    return new TestInputFileBuilder(relativePath);
   }
 
   public TestInputFileBuilder setBaseDir(Path baseDir) {
@@ -101,17 +80,6 @@ public class TestInputFileBuilder {
 
   public TestInputFileBuilder setLines(int lines) {
     this.lines = lines;
-    return this;
-  }
-
-  /**
-   * Set contents of the file and calculates metadata from it.
-   * The contents will be returned by {@link InputFile#contents()} and {@link InputFile#inputStream()} and can be
-   * inconsistent with the actual physical file pointed by {@link InputFile#path()}, {@link InputFile#absolutePath()}, etc.
-   */
-  public TestInputFileBuilder setContents(String content) {
-    this.contents = content;
-    initMetadata(content);
     return this;
   }
 
@@ -138,7 +106,7 @@ public class TestInputFileBuilder {
   }
 
   public SonarLintInputFile build() {
-    ClientInputFile clientInputFile = new InMemoryTestClientInputFile(contents, relativePath, baseDir != null ? baseDir.resolve(relativePath) : null, type == Type.TEST,
+    ClientInputFile clientInputFile = new InMemoryTestClientInputFile("contents", relativePath, baseDir != null ? baseDir.resolve(relativePath) : null, type == Type.TEST,
       language);
     return new SonarLintInputFile(clientInputFile, f -> new FileMetadata.Metadata(lines, originalLineStartOffsets, lastValidOffset))
       .setType(type)

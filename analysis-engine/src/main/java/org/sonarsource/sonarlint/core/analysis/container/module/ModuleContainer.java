@@ -51,9 +51,7 @@ public class ModuleContainer extends SpringComponentContainer {
       SonarLintModuleFileSystem.class,
       ModuleInputFileBuilder.class,
       FileMetadata.class,
-      LanguageDetection.class,
-
-      ModuleFileEventNotifier.class);
+      LanguageDetection.class);
     getParent().getComponentByType(AnalysisExtensionInstaller.class).install(this, ContainerLifespan.MODULE);
   }
 

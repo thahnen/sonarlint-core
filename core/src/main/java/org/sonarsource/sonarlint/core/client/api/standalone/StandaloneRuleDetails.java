@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import org.sonarsource.sonarlint.core.client.api.common.RuleDetails;
 import org.sonarsource.sonarlint.core.commons.IssueSeverity;
 import org.sonarsource.sonarlint.core.commons.Language;
 import org.sonarsource.sonarlint.core.commons.RuleKey;
@@ -34,7 +33,7 @@ import org.sonarsource.sonarlint.core.rule.extractor.SonarLintRuleParamDefinitio
 
 import static java.util.stream.Collectors.toSet;
 
-public class StandaloneRuleDetails implements RuleDetails {
+public class StandaloneRuleDetails {
 
   private final RuleKey key;
   private final String name;
@@ -74,32 +73,26 @@ public class StandaloneRuleDetails implements RuleDetails {
     return isActiveByDefault;
   }
 
-  @Override
   public String getKey() {
     return key.toString();
   }
 
-  @Override
   public String getName() {
     return name;
   }
 
-  @Override
   public String getHtmlDescription() {
     return description;
   }
 
-  @Override
   public Language getLanguage() {
     return language;
   }
 
-  @Override
   public IssueSeverity getDefaultSeverity() {
     return severity;
   }
 
-  @Override
   public RuleType getType() {
     return type;
   }

@@ -128,15 +128,10 @@ public class AnalysisEngine {
     globalAnalysisContainer.stopComponents();
   }
 
-  // Visible for medium tests
   public ModuleRegistry getModuleRegistry() {
     return globalAnalysisContainer.getModuleRegistry();
   }
 
-  // Visible for medium tests
-  public GlobalAnalysisContainer getGlobalAnalysisContainer() {
-    return globalAnalysisContainer;
-  }
 
   public static class AsyncCommand<T> {
     private final CompletableFuture<T> future = new CompletableFuture<>();

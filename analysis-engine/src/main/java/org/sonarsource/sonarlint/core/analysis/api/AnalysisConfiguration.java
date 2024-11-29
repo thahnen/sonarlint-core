@@ -22,7 +22,6 @@ package org.sonarsource.sonarlint.core.analysis.api;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,18 +115,8 @@ public class AnalysisConfiguration {
     private Builder() {
     }
 
-    public Builder addInputFiles(ClientInputFile... inputFiles) {
-      Collections.addAll(this.inputFiles, inputFiles);
-      return this;
-    }
-
     public Builder addInputFiles(Collection<? extends ClientInputFile> inputFiles) {
       this.inputFiles.addAll(inputFiles);
-      return this;
-    }
-
-    public Builder addInputFile(ClientInputFile inputFile) {
-      this.inputFiles.add(inputFile);
       return this;
     }
 
@@ -136,28 +125,13 @@ public class AnalysisConfiguration {
       return this;
     }
 
-    public Builder putExtraProperty(String key, String value) {
-      this.extraProperties.put(key, value);
-      return this;
-    }
-
     public Builder setBaseDir(Path baseDir) {
       this.baseDir = baseDir;
       return this;
     }
 
-    public Builder addActiveRules(ActiveRule... activeRules) {
-      Collections.addAll(this.activeRules, activeRules);
-      return this;
-    }
-
     public Builder addActiveRules(Collection<? extends ActiveRule> activeRules) {
       this.activeRules.addAll(activeRules);
-      return this;
-    }
-
-    public Builder addActiveRule(ActiveRule activeRules) {
-      this.activeRules.add(activeRules);
       return this;
     }
 

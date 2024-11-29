@@ -6,17 +6,21 @@
     <version>71.0.0.1292</version>
     <relativePath />
   </parent>
+
   <groupId>org.sonarsource.sonarlint.core</groupId>
   <artifactId>sonarlint-core-parent</artifactId>
-  <version>9.8-SNAPSHOT</version>
+  <version>9.8.1-SNAPSHOT</version>
   <packaging>pom</packaging>
+
   <name>SonarLint Core</name>
   <description>Library used by SonarLint flavors (Eclipse, IntelliJ, VSCode...)</description>
   <inceptionYear>2016</inceptionYear>
+
   <organization>
     <name>SonarSource</name>
     <url>http://www.sonarsource.com/</url>
   </organization>
+
   <issueManagement>
     <system>JIRA</system>
     <url>https://jira.sonarsource.com/browse/SLCORE</url>
@@ -24,42 +28,27 @@
 
   <modules>
     <module>analysis-engine</module>
-    <module>client-api</module>
     <module>commons</module>
     <module>core</module>
-    <module>http</module>
-    <module>issue-tracking</module>
-    <module>medium-tests</module>
     <module>plugin-api</module>
-    <module>server-api</module>
-    <module>slf4j-sonar-log</module>
-    <module>telemetry</module>
-    <module>osgi</module>
     <module>plugin-commons</module>
     <module>rule-extractor</module>
-    <module>rule-extractor-cli</module>
-    <module>report-aggregate</module>
-    <module>server-connection</module>
-    <module>vcs</module>
   </modules>
 
   <properties>
+    <gitRepositoryName>sonarlint-core</gitRepositoryName>
+    <artifactsToPublish>${project.groupId}:sonarlint-core:jar</artifactsToPublish>
+
+    <jdk.min.version>11</jdk.min.version>
+
+    <version.surefire.plugin>3.1.2</version.surefire.plugin>
+
     <sonar-plugin-api.version>10.1.0.809</sonar-plugin-api.version>
     <sonar-markdown.version>9.4.0.54424</sonar-markdown.version>
-    <sonar-scanner-protocol.version>7.9</sonar-scanner-protocol.version>
-    <protobuf.version>3.25.1</protobuf.version>
-    <gitRepositoryName>sonarlint-core</gitRepositoryName>
-    <okhttp.version>5.0.0-alpha.10</okhttp.version>
-    <junit.jupiter.version>5.9.1</junit.jupiter.version>
-    <junit.vintage.version>5.9.1</junit.vintage.version>
-    <artifactsToPublish>${project.groupId}:sonarlint-core:jar</artifactsToPublish>
-    <jdk.min.version>11</jdk.min.version>
-    <gson.version>2.10</gson.version>
+    <junit.version>5.9.1</junit.version>
     <mockito.version>4.9.0</mockito.version>
     <kotlin.version>1.6.21</kotlin.version>
     <lsp4j.version>0.19.0</lsp4j.version>
-
-    <version.surefire.plugin>3.1.2</version.surefire.plugin>
   </properties>
 
   <dependencyManagement>
@@ -74,22 +63,22 @@
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
-        <version>${junit.jupiter.version}</version>
+        <version>${junit.version}</version>
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-params</artifactId>
-        <version>${junit.jupiter.version}</version>
+        <version>${junit.version}</version>
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-engine</artifactId>
-        <version>${junit.jupiter.version}</version>
+        <version>${junit.version}</version>
       </dependency>
       <dependency>
         <groupId>org.junit.vintage</groupId>
         <artifactId>junit-vintage-engine</artifactId>
-        <version>${junit.vintage.version}</version>
+        <version>${junit.version}</version>
       </dependency>
       <dependency>
         <groupId>org.awaitility</groupId>
@@ -115,11 +104,6 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-compress</artifactId>
         <version>1.24.0</version>
-      </dependency>
-      <dependency>
-        <groupId>com.google.code.gson</groupId>
-        <artifactId>gson</artifactId>
-        <version>${gson.version}</version>
       </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
@@ -168,34 +152,9 @@
         <version>2.0.1</version>
       </dependency>
       <dependency>
-        <groupId>com.squareup.okhttp3</groupId>
-        <artifactId>okhttp</artifactId>
-        <version>${okhttp.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.squareup.okhttp3</groupId>
-        <artifactId>mockwebserver3</artifactId>
-        <version>${okhttp.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.httpcomponents.client5</groupId>
-        <artifactId>httpclient5</artifactId>
-        <version>5.2.1</version>
-      </dependency>
-      <dependency>
-        <groupId>io.github.hakky54</groupId>
-        <artifactId>sslcontext-kickstart</artifactId>
-        <version>8.1.6</version>
-      </dependency>
-      <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
         <version>1.7.36</version>
-      </dependency>
-      <dependency>
-        <groupId>com.github.tomakehurst</groupId>
-        <artifactId>wiremock-jre8</artifactId>
-        <version>2.35.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -203,11 +162,6 @@
   <build>
     <pluginManagement>
       <plugins>
-        <plugin>
-          <groupId>org.apache.felix</groupId>
-          <artifactId>maven-bundle-plugin</artifactId>
-          <version>5.1.8</version>
-        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
@@ -238,11 +192,6 @@
           <version>1.7.1</version>
         </plugin>
         <plugin>
-          <groupId>org.xolstice.maven.plugins</groupId>
-          <artifactId>protobuf-maven-plugin</artifactId>
-          <version>0.6.1</version>
-        </plugin>
-        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
           <version>3.4.1</version>
@@ -262,12 +211,6 @@
   </build>
 
   <profiles>
-    <profile>
-      <id>its</id>
-      <modules>
-        <module>its</module>
-      </modules>
-    </profile>
     <profile>
       <id>coverage</id>
       <build>

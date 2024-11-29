@@ -21,16 +21,16 @@ package org.sonarsource.sonarlint.core.analysis.sonarapi;
 
 import java.util.stream.Stream;
 import org.sonar.api.batch.fs.InputFile;
-import org.sonarsource.sonarlint.core.analysis.api.ClientModuleFileSystem;
+import org.sonarsource.sonarlint.core.analysis.container.global.TransientModuleFileSystem;
 import org.sonarsource.sonarlint.core.analysis.container.module.ModuleInputFileBuilder;
 import org.sonarsource.sonarlint.plugin.api.module.file.ModuleFileSystem;
 
 public class SonarLintModuleFileSystem implements ModuleFileSystem {
 
-  private final ClientModuleFileSystem clientFileSystem;
+  private final TransientModuleFileSystem clientFileSystem;
   private final ModuleInputFileBuilder inputFileBuilder;
 
-  public SonarLintModuleFileSystem(ClientModuleFileSystem clientFileSystem, ModuleInputFileBuilder inputFileBuilder) {
+  public SonarLintModuleFileSystem(TransientModuleFileSystem clientFileSystem, ModuleInputFileBuilder inputFileBuilder) {
     this.clientFileSystem = clientFileSystem;
     this.inputFileBuilder = inputFileBuilder;
   }

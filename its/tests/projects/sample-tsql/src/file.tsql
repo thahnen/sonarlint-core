@@ -1,3 +1,0 @@
-UPDATE books
-SET title = 'unknown'
-WHERE title = NULL -- Noncompliant

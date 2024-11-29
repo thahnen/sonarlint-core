@@ -23,9 +23,8 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonarsource.sonarlint.core.analysis.api.ClientInputFile;
-import org.sonarsource.sonarlint.core.analysis.api.ClientModuleFileSystem;
 
-class TransientModuleFileSystem implements ClientModuleFileSystem {
+public class TransientModuleFileSystem {
 
   private final Iterable<ClientInputFile> filesToAnalyze;
 
@@ -33,14 +32,12 @@ class TransientModuleFileSystem implements ClientModuleFileSystem {
     this.filesToAnalyze = filesToAnalyze;
   }
 
-  @Override
   public Stream<ClientInputFile> files(String suffix, InputFile.Type type) {
     return files()
       .filter(file -> file.relativePath().endsWith(suffix))
       .filter(file -> file.isTest() == (type == InputFile.Type.TEST));
   }
 
-  @Override
   public Stream<ClientInputFile> files() {
     return StreamSupport.stream(filesToAnalyze.spliterator(), false);
   }

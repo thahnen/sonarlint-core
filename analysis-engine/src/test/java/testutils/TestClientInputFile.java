@@ -65,11 +65,6 @@ public class TestClientInputFile implements ClientInputFile {
   }
 
   @Override
-  public <G> G getClientObject() {
-    return null;
-  }
-
-  @Override
   public InputStream inputStream() throws IOException {
     return Files.newInputStream(path);
   }

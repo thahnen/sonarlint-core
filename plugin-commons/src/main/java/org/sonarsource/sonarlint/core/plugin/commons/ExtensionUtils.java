@@ -20,7 +20,6 @@
 package org.sonarsource.sonarlint.core.plugin.commons;
 
 import org.sonar.api.batch.InstantiationStrategy;
-import org.sonar.api.batch.ScannerSide;
 import org.sonar.api.utils.AnnotationUtils;
 import org.sonarsource.api.sonarlint.SonarLintSide;
 
@@ -40,11 +39,6 @@ public class ExtensionUtils {
 
   public static boolean isSonarLintSide(Object extension) {
     return AnnotationUtils.getAnnotation(extension, SonarLintSide.class) != null;
-  }
-
-  public static boolean isScannerSide(Object extension) {
-    return AnnotationUtils.getAnnotation(extension, ScannerSide.class) != null ||
-      AnnotationUtils.getAnnotation(extension, SonarLintSide.class) != null;
   }
 
   public static boolean isType(Object extension, Class<?> extensionClass) {

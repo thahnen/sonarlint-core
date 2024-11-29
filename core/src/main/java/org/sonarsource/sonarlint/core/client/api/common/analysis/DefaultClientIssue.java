@@ -24,10 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import org.sonarsource.sonarlint.core.analysis.api.ClientInputFile;
 import org.sonarsource.sonarlint.core.analysis.api.Flow;
-import org.sonarsource.sonarlint.core.analysis.api.QuickFix;
 import org.sonarsource.sonarlint.core.commons.CleanCodeAttribute;
 import org.sonarsource.sonarlint.core.commons.ImpactSeverity;
 import org.sonarsource.sonarlint.core.commons.IssueSeverity;
@@ -45,7 +43,6 @@ public final class DefaultClientIssue implements Issue {
   private final String primaryMessage;
   private final ClientInputFile clientInputFile;
   private final List<Flow> flows;
-  private final List<QuickFix> quickFixes;
   private final org.sonarsource.sonarlint.core.commons.TextRange textRange;
   private final Optional<String> ruleDescriptionContextKey;
   private final Optional<VulnerabilityProbability> vulnerabilityProbability;
@@ -55,7 +52,6 @@ public final class DefaultClientIssue implements Issue {
     this.primaryMessage = i.getMessage();
     this.clientInputFile = i.getInputFile();
     this.flows = i.flows();
-    this.quickFixes = i.quickFixes();
     this.ruleDescriptionContextKey = i.getRuleDescriptionContextKey();
     this.severity = sonarLintRuleDefinition.getDefaultSeverity();
     this.type = sonarLintRuleDefinition.getType();
@@ -65,27 +61,6 @@ public final class DefaultClientIssue implements Issue {
     this.impacts.putAll(i.getOverriddenImpacts());
     this.ruleKey = sonarLintRuleDefinition.getKey();
     this.vulnerabilityProbability = sonarLintRuleDefinition.getVulnerabilityProbability();
-  }
-
-  public DefaultClientIssue(org.sonarsource.sonarlint.core.analysis.api.Issue i, IssueSeverity severity,
-    RuleType type, @Nullable CleanCodeAttribute cleanCodeAttribute, Map<SoftwareQuality, ImpactSeverity> defaultImpacts,
-    Optional<VulnerabilityProbability> vulnerabilityProbability) {
-    this.textRange = i.getTextRange() != null ? i.getTextRange() : null;
-    this.primaryMessage = i.getMessage();
-    this.clientInputFile = i.getInputFile();
-    this.flows = i.flows();
-    this.quickFixes = i.quickFixes();
-    this.severity = severity;
-    this.type = type;
-    this.cleanCodeAttribute = cleanCodeAttribute;
-    this.impacts = new EnumMap<>(SoftwareQuality.class);
-    if (!defaultImpacts.isEmpty()) {
-      this.impacts.putAll(defaultImpacts);
-      this.impacts.putAll(i.getOverriddenImpacts());
-    }
-    this.ruleKey = i.getRuleKey();
-    this.ruleDescriptionContextKey = i.getRuleDescriptionContextKey();
-    this.vulnerabilityProbability = vulnerabilityProbability;
   }
 
   @Override
@@ -128,11 +103,6 @@ public final class DefaultClientIssue implements Issue {
   @Override
   public List<Flow> flows() {
     return flows;
-  }
-
-  @Override
-  public List<QuickFix> quickFixes() {
-    return quickFixes;
   }
 
   @Override

@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import org.sonarsource.sonarlint.core.analysis.api.ClientModulesProvider;
 import org.sonarsource.sonarlint.core.commons.Language;
 import org.sonarsource.sonarlint.core.commons.SonarLintUserHome;
 import org.sonarsource.sonarlint.core.commons.Version;
@@ -45,7 +44,6 @@ public abstract class AbstractGlobalConfiguration {
   private final Map<String, String> extraProperties;
   private final Path nodeJsPath;
   private final Version nodeJsVersion;
-  private final ClientModulesProvider modulesProvider;
   private final long clientPid;
 
   protected AbstractGlobalConfiguration(AbstractBuilder<?> builder) {
@@ -56,16 +54,11 @@ public abstract class AbstractGlobalConfiguration {
     this.extraProperties = new LinkedHashMap<>(builder.extraProperties);
     this.nodeJsPath = builder.nodeJsPath;
     this.nodeJsVersion = builder.nodeJsVersion;
-    this.modulesProvider = builder.modulesProvider;
     this.clientPid = builder.clientPid;
   }
 
   public Map<String, String> extraProperties() {
     return Collections.unmodifiableMap(extraProperties);
-  }
-
-  public ClientModulesProvider getModulesProvider() {
-    return modulesProvider;
   }
 
   public Path getSonarLintUserHome() {
@@ -107,7 +100,6 @@ public abstract class AbstractGlobalConfiguration {
     private Map<String, String> extraProperties = Collections.emptyMap();
     private Path nodeJsPath;
     private Version nodeJsVersion;
-    private ClientModulesProvider modulesProvider;
     private long clientPid;
 
     public G setLogOutput(@Nullable ClientLogOutput logOutput) {
@@ -161,11 +153,6 @@ public abstract class AbstractGlobalConfiguration {
     public G setNodeJs(Path nodeJsPath, Version nodeJsVersion) {
       this.nodeJsPath = nodeJsPath;
       this.nodeJsVersion = nodeJsVersion;
-      return (G) this;
-    }
-
-    public G setModulesProvider(ClientModulesProvider modulesProvider) {
-      this.modulesProvider = modulesProvider;
       return (G) this;
     }
 

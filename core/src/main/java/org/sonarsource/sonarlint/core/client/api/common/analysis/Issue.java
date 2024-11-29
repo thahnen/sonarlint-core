@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Optional;
 import org.sonarsource.sonarlint.core.analysis.api.Flow;
 import org.sonarsource.sonarlint.core.analysis.api.IssueLocation;
-import org.sonarsource.sonarlint.core.analysis.api.QuickFix;
 import org.sonarsource.sonarlint.core.commons.CleanCodeAttribute;
 import org.sonarsource.sonarlint.core.commons.ImpactSeverity;
 import org.sonarsource.sonarlint.core.commons.IssueSeverity;
@@ -46,10 +45,7 @@ public interface Issue extends IssueLocation {
 
   List<Flow> flows();
 
-  List<QuickFix> quickFixes();
-
   Optional<String> getRuleDescriptionContextKey();
 
   Optional<VulnerabilityProbability> getVulnerabilityProbability();
-
 }

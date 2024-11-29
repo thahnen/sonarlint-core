@@ -75,11 +75,6 @@ public class InMemoryTestClientInputFile implements ClientInputFile {
   }
 
   @Override
-  public <G> G getClientObject() {
-    return null;
-  }
-
-  @Override
   public InputStream inputStream() throws IOException {
     return new ByteArrayInputStream(relativePath.getBytes(StandardCharsets.UTF_8));
   }

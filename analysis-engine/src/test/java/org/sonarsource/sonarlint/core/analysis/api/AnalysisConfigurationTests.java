@@ -51,14 +51,10 @@ class AnalysisConfigurationTests {
     activeRuleWithParams.setParams(Map.of("param1", "value1"));
     var config = AnalysisConfiguration.builder()
       .setBaseDir(baseDir)
-      .addInputFile(inputFile)
-      .addInputFiles(inputFileWithLanguage)
-      .addInputFiles(List.of(testInputFile))
+      .addInputFiles(List.of(inputFile, inputFileWithLanguage, testInputFile))
       .putAllExtraProperties(props)
-      .putExtraProperty("sonar.foo", "bar")
-      .addActiveRules(List.of(new ActiveRule("java:S123", null), new ActiveRule("java:S456", null)))
-      .addActiveRule(activeRuleWithParams)
-      .addActiveRules(new ActiveRule("python:S123", null), new ActiveRule("python:S456", null))
+      .putAllExtraProperties(Map.of("sonar.foo", "bar"))
+      .addActiveRules(List.of(new ActiveRule("java:S123", null), new ActiveRule("java:S456", null), activeRuleWithParams, new ActiveRule("python:S123", null), new ActiveRule("python:S456", null)))
       .build();
     assertThat(config).hasToString("[\n" +
       "  baseDir: " + baseDir + "\n" +

@@ -65,12 +65,6 @@ public class ActiveRuleAdapter implements ActiveRule {
 
   @Override
   public String templateRuleKey() {
-    var templateRuleKey = activeRule.getTemplateRuleKey();
-    if (!StringUtils.isEmpty(templateRuleKey)) {
-      // The SQ plugin API expect template rule key to be only the "rule" part of the key (without the repository key)
-      var ruleKey = RuleKey.parse(templateRuleKey);
-      return ruleKey.rule();
-    }
     return null;
   }
 

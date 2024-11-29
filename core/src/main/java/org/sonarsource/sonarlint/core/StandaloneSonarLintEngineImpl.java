@@ -34,7 +34,6 @@ import org.sonarsource.sonarlint.core.analysis.api.AnalysisConfiguration;
 import org.sonarsource.sonarlint.core.analysis.api.AnalysisEngineConfiguration;
 import org.sonarsource.sonarlint.core.analysis.api.AnalysisResults;
 import org.sonarsource.sonarlint.core.analysis.command.AnalyzeCommand;
-import org.sonarsource.sonarlint.core.client.api.common.PluginDetails;
 import org.sonarsource.sonarlint.core.client.api.common.analysis.DefaultClientIssue;
 import org.sonarsource.sonarlint.core.client.api.common.analysis.IssueListener;
 import org.sonarsource.sonarlint.core.client.api.exceptions.SonarLintWrappedException;
@@ -54,51 +53,51 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toSet;
 
 public final class StandaloneSonarLintEngineImpl extends AbstractSonarLintEngine implements StandaloneSonarLintEngine {
-  private final Collection<PluginDetails> pluginDetails;
   private final Map<String, SonarLintRuleDefinition> allRulesDefinitionsByKey;
   private final AnalysisEngine analysisEngine;
 
+  /* IN-USE */
   public StandaloneSonarLintEngineImpl(StandaloneGlobalConfiguration globalConfig) {
     super(globalConfig.getLogOutput());
     setLogging(null);
 
     var loadingResult = loadPlugins(globalConfig);
-    pluginDetails = loadingResult.getPluginCheckResultByKeys().values().stream()
-      .map(c -> new PluginDetails(c.getPlugin().getKey(), c.getPlugin().getName(), c.getPlugin().getVersion().toString(), c.getSkipReason().orElse(null)))
-      .collect(Collectors.toList());
-
-    allRulesDefinitionsByKey = loadPluginMetadata(loadingResult.getLoadedPlugins(), globalConfig.getEnabledLanguages(), false, false);
+    allRulesDefinitionsByKey = loadPluginMetadata(loadingResult.getLoadedPlugins(), globalConfig.getEnabledLanguages());
 
     var analysisGlobalConfig = AnalysisEngineConfiguration.builder()
       .setClientPid(globalConfig.getClientPid())
       .setExtraProperties(globalConfig.extraProperties())
       .setNodeJs(globalConfig.getNodeJsPath())
       .setWorkDir(globalConfig.getWorkDir())
-      .setModulesProvider(globalConfig.getModulesProvider())
       .build();
     this.analysisEngine = new AnalysisEngine(analysisGlobalConfig, loadingResult.getLoadedPlugins(), logOutput);
   }
 
+  /* IN-USE */
   @Override
   public AnalysisEngine getAnalysisEngine() {
     return analysisEngine;
   }
 
+  /* IN-USE */
   private static PluginsLoadResult loadPlugins(StandaloneGlobalConfiguration globalConfig) {
     var config = new Configuration(globalConfig.getPluginPaths(), globalConfig.getEnabledLanguages(), false, Optional.ofNullable(globalConfig.getNodeJsVersion()));
     return new PluginsLoader().load(config);
   }
 
+  /* IN-USE */
   @Override
   public Optional<StandaloneRuleDetails> getRuleDetails(String ruleKey) {
     return Optional.ofNullable(allRulesDefinitionsByKey.get(ruleKey)).map(StandaloneRuleDetails::new);
   }
 
+  /* IN-USE */
   @Override
   public Collection<StandaloneRuleDetails> getAllRuleDetails() {
     return allRulesDefinitionsByKey.values().stream().map(StandaloneRuleDetails::new).collect(Collectors.toList());
   }
 
+  /* IN-USE */
   @Override
   public AnalysisResults analyze(StandaloneAnalysisConfiguration configuration, IssueListener issueListener, @Nullable ClientLogOutput logOutput,
     @Nullable ClientProgressMonitor monitor) {
@@ -113,7 +112,7 @@ public final class StandaloneSonarLintEngineImpl extends AbstractSonarLintEngine
       .setBaseDir(configuration.baseDir())
       .build();
 
-    var analyzeCommand = new AnalyzeCommand(configuration.moduleKey(), analysisConfig,
+    var analyzeCommand = new AnalyzeCommand(analysisConfig,
       i -> issueListener.handle(new DefaultClientIssue(i, allRulesDefinitionsByKey.get(i.getRuleKey()))),
       logOutput);
     return postAnalysisCommandAndGetResult(analyzeCommand, monitor);
@@ -175,6 +174,7 @@ public final class StandaloneSonarLintEngineImpl extends AbstractSonarLintEngine
     };
   }
 
+  /* IN-USE */
   @Override
   public void stop() {
     setLogging(null);
@@ -185,10 +185,4 @@ public final class StandaloneSonarLintEngineImpl extends AbstractSonarLintEngine
       throw SonarLintWrappedException.wrap(e);
     }
   }
-
-  @Override
-  public Collection<PluginDetails> getPluginDetails() {
-    return pluginDetails;
-  }
-
 }

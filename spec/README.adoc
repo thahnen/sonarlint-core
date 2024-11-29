@@ -1,7 +1,0 @@
-= SonarLint Core documentation
-
-link:connected_mode[Connecting with SonarQube/SonarCloud]
-
-link:logging.adoc[Logging]
-
-link:glossary.adoc[Glossary]

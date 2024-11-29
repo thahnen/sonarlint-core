@@ -57,11 +57,6 @@ class ClientInputFileTests {
       }
 
       @Override
-      public <G> G getClientObject() {
-        return null;
-      }
-
-      @Override
       public Charset getCharset() {
         return null;
       }

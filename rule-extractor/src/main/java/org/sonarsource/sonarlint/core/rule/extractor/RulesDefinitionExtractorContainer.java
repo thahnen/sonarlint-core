@@ -21,7 +21,6 @@ package org.sonarsource.sonarlint.core.rule.extractor;
 
 import java.util.Map;
 import org.sonar.api.Plugin;
-import org.sonar.api.SonarQubeVersion;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.server.rule.RulesDefinition.Context;
 import org.sonar.api.server.rule.RulesDefinitionXmlLoader;
@@ -45,9 +44,7 @@ public class RulesDefinitionExtractorContainer extends SpringComponentContainer 
   protected void doBeforeStart() {
     var sonarPluginApiVersion = ApiVersions.loadSonarPluginApiVersion();
     var sonarlintPluginApiVersion = ApiVersions.loadSonarLintPluginApiVersion();
-
     var sonarLintRuntime = new SonarLintRuntimeImpl(sonarPluginApiVersion, sonarlintPluginApiVersion, -1);
-
     var config = new EmptyConfiguration();
 
     var extensionInstaller = new ExtensionInstaller(sonarLintRuntime, config);
@@ -67,7 +64,6 @@ public class RulesDefinitionExtractorContainer extends SpringComponentContainer 
     add(
       config,
       sonarLintRuntime,
-      new SonarQubeVersion(sonarPluginApiVersion),
       RulesDefinitionXmlLoader.class,
       RuleDefinitionsLoader.class,
       NoopTempFolder.class,
@@ -82,5 +78,4 @@ public class RulesDefinitionExtractorContainer extends SpringComponentContainer 
   public Context getRulesDefinitionContext() {
     return rulesDefinitionContext;
   }
-
 }

@@ -21,7 +21,6 @@ package org.sonarsource.sonarlint.core.rule.extractor;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -42,7 +41,6 @@ import static java.util.stream.Collectors.toSet;
 import static org.sonarsource.sonarlint.core.rule.extractor.SecurityStandards.fromSecurityStandards;
 
 public class SonarLintRuleDefinition {
-
   private final String key;
   private final String name;
   private final IssueSeverity defaultSeverity;
@@ -50,15 +48,12 @@ public class SonarLintRuleDefinition {
   private final CleanCodeAttribute cleanCodeAttribute;
   private final Map<SoftwareQuality, ImpactSeverity> defaultImpacts;
   private final String description;
-  private final List<SonarLintRuleDescriptionSection> descriptionSections;
   private final Map<String, SonarLintRuleParamDefinition> params;
   private final Map<String, String> defaultParams = new HashMap<>();
   private final boolean isActiveByDefault;
   private final Language language;
   private final String[] tags;
   private final Set<String> deprecatedKeys;
-  private final Set<String> educationPrincipleKeys;
-  private final Optional<String> internalKey;
   // Relevant for Hotspot rules only
   private final Optional<VulnerabilityProbability> vulnerabilityProbability;
 
@@ -76,18 +71,14 @@ public class SonarLintRuleDefinition {
     var htmlDescription = rule.htmlDescription() != null ? rule.htmlDescription() : Markdown.convertToHtml(rule.markdownDescription());
     if (rule.type() == org.sonar.api.rules.RuleType.SECURITY_HOTSPOT) {
       this.description = null;
-      this.descriptionSections = LegacyHotspotRuleDescriptionSectionsGenerator.extractDescriptionSectionsFromHtml(htmlDescription);
     } else {
       this.description = htmlDescription;
-      this.descriptionSections = rule.ruleDescriptionSections().stream().map(s -> new SonarLintRuleDescriptionSection(s.getKey(), s.getHtmlContent(),
-        s.getContext().map(c -> new SonarLintRuleDescriptionSection.Context(c.getKey(), c.getDisplayName())))).collect(Collectors.toList());
     }
 
     this.isActiveByDefault = rule.activatedByDefault();
     this.language = Language.forKey(rule.repository().language()).orElseThrow(() -> new IllegalStateException("Unknown language with key: " + rule.repository().language()));
     this.tags = rule.tags().toArray(new String[0]);
     this.deprecatedKeys = rule.deprecatedRuleKeys().stream().map(RuleKey::toString).collect(toSet());
-    this.educationPrincipleKeys = rule.educationPrincipleKeys();
     this.vulnerabilityProbability =
       rule.type() == org.sonar.api.rules.RuleType.SECURITY_HOTSPOT ?
         Optional.of(fromSecurityStandards(rule.securityStandards()).getSlCategory().getVulnerability()) : Optional.empty();
@@ -101,7 +92,6 @@ public class SonarLintRuleDefinition {
       }
     }
     params = Collections.unmodifiableMap(builder);
-    this.internalKey = Optional.ofNullable(rule.internalKey());
   }
 
   public String getKey() {
@@ -144,10 +134,6 @@ public class SonarLintRuleDefinition {
     return description;
   }
 
-  public List<SonarLintRuleDescriptionSection> getDescriptionSections() {
-    return descriptionSections;
-  }
-
   public Language getLanguage() {
     return language;
   }
@@ -158,14 +144,6 @@ public class SonarLintRuleDefinition {
 
   public Set<String> getDeprecatedKeys() {
     return deprecatedKeys;
-  }
-
-  public Set<String> getEducationPrincipleKeys() {
-    return educationPrincipleKeys;
-  }
-
-  public Optional<String> getInternalKey() {
-    return internalKey;
   }
 
   public Optional<VulnerabilityProbability> getVulnerabilityProbability() {

@@ -34,28 +34,25 @@ public class Issue implements IssueLocation {
   private final String primaryMessage;
   private final ClientInputFile clientInputFile;
   private final List<Flow> flows;
-  private final List<QuickFix> quickFixes;
   private final Optional<String> ruleDescriptionContextKey;
   private final TextRange textRange;
   private final Map<SoftwareQuality, ImpactSeverity> overriddenImpacts;
 
   public Issue(ActiveRuleAdapter activeRule, @Nullable String primaryMessage, Map<SoftwareQuality, ImpactSeverity> overriddenImpacts,
-    @Nullable org.sonar.api.batch.fs.TextRange textRange, @Nullable ClientInputFile clientInputFile, List<Flow> flows, List<QuickFix> quickFixes,
+    @Nullable org.sonar.api.batch.fs.TextRange textRange, @Nullable ClientInputFile clientInputFile, List<Flow> flows,
     Optional<String> ruleDescriptionContextKey) {
     this(activeRule.ruleKey().toString(), primaryMessage, overriddenImpacts, Optional.ofNullable(textRange).map(WithTextRange::convert).orElse(null), clientInputFile, flows,
-      quickFixes,
       ruleDescriptionContextKey);
   }
 
   public Issue(String ruleKey, @Nullable String primaryMessage, Map<SoftwareQuality, ImpactSeverity> overriddenImpacts, @Nullable TextRange textRange,
-    @Nullable ClientInputFile clientInputFile, List<Flow> flows, List<QuickFix> quickFixes, Optional<String> ruleDescriptionContextKey) {
+    @Nullable ClientInputFile clientInputFile, List<Flow> flows, Optional<String> ruleDescriptionContextKey) {
     this.overriddenImpacts = overriddenImpacts;
     this.textRange = textRange;
     this.ruleKey = ruleKey;
     this.primaryMessage = primaryMessage;
     this.clientInputFile = clientInputFile;
     this.flows = flows;
-    this.quickFixes = quickFixes;
     this.ruleDescriptionContextKey = ruleDescriptionContextKey;
   }
 
@@ -76,10 +73,6 @@ public class Issue implements IssueLocation {
 
   public List<Flow> flows() {
     return flows;
-  }
-
-  public List<QuickFix> quickFixes() {
-    return quickFixes;
   }
 
   @Override

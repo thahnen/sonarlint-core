@@ -26,7 +26,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.sonar.api.server.rule.RulesDefinition;
-import org.sonarsource.sonarlint.plugin.api.module.file.ModuleFileListener;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,8 +49,6 @@ class PluginClassloaderFactoryTests {
 
     // plugin can access to sonar-plugin-api classes...
     assertThat(canLoadClass(classLoader, RulesDefinition.class.getCanonicalName())).isTrue();
-    // ... to sonarlint-plugin-api classes...
-    assertThat(canLoadClass(classLoader, ModuleFileListener.class.getCanonicalName())).isTrue();
     // ... and of course to its own classes !
     assertThat(canLoadClass(classLoader, BASE_PLUGIN_CLASSNAME)).isTrue();
 

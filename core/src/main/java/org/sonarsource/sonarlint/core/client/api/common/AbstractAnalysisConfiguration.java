@@ -26,8 +26,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import org.sonarsource.sonarlint.core.analysis.api.ClientInputFile;
 
@@ -37,13 +35,11 @@ public abstract class AbstractAnalysisConfiguration {
   private final List<ClientInputFile> inputFiles;
   private final Map<String, String> extraProperties;
   private final Path baseDir;
-  private final Object moduleKey;
 
   protected AbstractAnalysisConfiguration(AbstractBuilder<?> builder) {
     this.baseDir = builder.baseDir;
     this.inputFiles = builder.inputFiles;
     this.extraProperties = builder.extraProperties;
-    this.moduleKey = builder.moduleKey;
   }
 
   public Map<String, String> extraProperties() {
@@ -54,11 +50,6 @@ public abstract class AbstractAnalysisConfiguration {
     return baseDir;
   }
 
-  @CheckForNull
-  public Object moduleKey() {
-    return moduleKey;
-  }
-
   public List<ClientInputFile> inputFiles() {
     return inputFiles;
   }
@@ -66,7 +57,6 @@ public abstract class AbstractAnalysisConfiguration {
   protected void generateToStringCommon(StringBuilder sb) {
     sb.append("  baseDir: ").append(baseDir()).append("\n");
     sb.append("  extraProperties: ").append(extraProperties()).append("\n");
-    sb.append("  moduleKey: ").append(moduleKey()).append("\n");
   }
 
   protected void generateToStringInputFiles(StringBuilder sb) {
@@ -95,7 +85,6 @@ public abstract class AbstractAnalysisConfiguration {
     private final List<ClientInputFile> inputFiles = new ArrayList<>();
     private final Map<String, String> extraProperties = new HashMap<>();
     private Path baseDir;
-    private Object moduleKey;
 
     public G addInputFiles(ClientInputFile... inputFiles) {
       Collections.addAll(this.inputFiles, inputFiles);
@@ -126,11 +115,5 @@ public abstract class AbstractAnalysisConfiguration {
       this.baseDir = baseDir;
       return (G) this;
     }
-
-    public G setModuleKey(@Nullable Object moduleKey) {
-      this.moduleKey = moduleKey;
-      return (G) this;
-    }
-
   }
 }

@@ -21,15 +21,12 @@ package org.sonarsource.sonarlint.core.analysis.api;
 
 import java.util.Collections;
 import java.util.Map;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 
 public class ActiveRule {
 
   private final String ruleKey;
   private final String languageKey;
   private Map<String, String> params = Collections.emptyMap();
-  private String templateRuleKey = null;
 
   public ActiveRule(String ruleKey, String languageKey) {
     this.ruleKey = ruleKey;
@@ -52,15 +49,6 @@ public class ActiveRule {
     this.params = Map.copyOf(params);
   }
 
-  @CheckForNull
-  public String getTemplateRuleKey() {
-    return templateRuleKey;
-  }
-
-  public void setTemplateRuleKey(@Nullable String templateRuleKey) {
-    this.templateRuleKey = templateRuleKey;
-  }
-
   @Override
   public String toString() {
     var sb = new StringBuilder();
@@ -70,5 +58,4 @@ public class ActiveRule {
     }
     return sb.toString();
   }
-
 }

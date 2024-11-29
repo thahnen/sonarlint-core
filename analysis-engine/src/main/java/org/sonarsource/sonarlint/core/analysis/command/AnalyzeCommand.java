@@ -30,14 +30,11 @@ import org.sonarsource.sonarlint.core.commons.log.SonarLintLogger;
 import org.sonarsource.sonarlint.core.commons.progress.ProgressMonitor;
 
 public class AnalyzeCommand implements Command<AnalysisResults> {
-  @Nullable
-  private final Object moduleKey;
   private final AnalysisConfiguration configuration;
   private final Consumer<Issue> issueListener;
   private final ClientLogOutput logOutput;
 
-  public AnalyzeCommand(@Nullable Object moduleKey, AnalysisConfiguration configuration, Consumer<Issue> issueListener, @Nullable ClientLogOutput logOutput) {
-    this.moduleKey = moduleKey;
+  public AnalyzeCommand(AnalysisConfiguration configuration, Consumer<Issue> issueListener, @Nullable ClientLogOutput logOutput) {
     this.configuration = configuration;
     this.issueListener = issueListener;
     this.logOutput = logOutput;
@@ -48,11 +45,10 @@ public class AnalyzeCommand implements Command<AnalysisResults> {
     if (logOutput != null) {
       SonarLintLogger.setTarget(logOutput);
     }
-    var moduleContainer = moduleKey != null ? moduleRegistry.getContainerFor(moduleKey) : null;
-    if (moduleContainer == null) {
-      // if not found, means we are outside of any module (e.g. single file analysis on VSCode)
-      moduleContainer = moduleRegistry.createTransientContainer(configuration.inputFiles());
-    }
+
+    // There is no module key so also no module container, just create a transient one!
+    var moduleContainer = moduleRegistry.createTransientContainer(configuration.inputFiles());
+
     Throwable originalException = null;
     try {
       return moduleContainer.analyze(configuration, issueListener, progressMonitor);

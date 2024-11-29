@@ -20,7 +20,6 @@
 package org.sonarsource.sonarlint.core.analysis.container.global;
 
 import java.time.Clock;
-import org.sonar.api.SonarQubeVersion;
 import org.sonar.api.utils.System2;
 import org.sonar.api.utils.UriReader;
 import org.sonarsource.sonarlint.core.analysis.api.AnalysisEngineConfiguration;
@@ -54,7 +53,6 @@ public class GlobalAnalysisContainer extends SpringComponentContainer {
       GlobalSettings.class,
       new GlobalConfigurationProvider(),
       AnalysisExtensionInstaller.class,
-      new SonarQubeVersion(sonarPluginApiVersion),
       new SonarLintRuntimeImpl(sonarPluginApiVersion, sonarlintPluginApiVersion, analysisGlobalConfig.getClientPid()),
 
       new GlobalTempFolderProvider(),
@@ -68,7 +66,7 @@ public class GlobalAnalysisContainer extends SpringComponentContainer {
     declarePluginProperties();
     globalExtensionContainer = new GlobalExtensionContainer(this);
     globalExtensionContainer.startComponents();
-    this.moduleRegistry = new ModuleRegistry(globalExtensionContainer, analysisGlobalConfig.getModulesProvider());
+    this.moduleRegistry = new ModuleRegistry(globalExtensionContainer);
   }
 
   @Override

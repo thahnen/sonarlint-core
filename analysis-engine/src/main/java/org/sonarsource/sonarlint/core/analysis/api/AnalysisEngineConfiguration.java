@@ -36,14 +36,12 @@ public class AnalysisEngineConfiguration {
   private final Map<String, String> extraProperties;
   private final Path nodeJsPath;
   private final long clientPid;
-  private final ClientModulesProvider modulesProvider;
 
   private AnalysisEngineConfiguration(Builder builder) {
     this.workDir = builder.workDir;
     this.extraProperties = new LinkedHashMap<>(builder.extraProperties);
     this.nodeJsPath = builder.nodeJsPath;
     this.clientPid = builder.clientPid;
-    this.modulesProvider = builder.modulesProvider;
   }
 
   public static Builder builder() {
@@ -56,10 +54,6 @@ public class AnalysisEngineConfiguration {
 
   public long getClientPid() {
     return clientPid;
-  }
-
-  public ClientModulesProvider getModulesProvider() {
-    return modulesProvider;
   }
 
   public Map<String, String> getEffectiveSettings() {
@@ -75,7 +69,6 @@ public class AnalysisEngineConfiguration {
     private Map<String, String> extraProperties = Collections.emptyMap();
     private Path nodeJsPath;
     private long clientPid;
-    private ClientModulesProvider modulesProvider;
 
     private Builder() {
 
@@ -107,11 +100,6 @@ public class AnalysisEngineConfiguration {
 
     public Builder setClientPid(long clientPid) {
       this.clientPid = clientPid;
-      return this;
-    }
-
-    public Builder setModulesProvider(ClientModulesProvider modulesProvider) {
-      this.modulesProvider = modulesProvider;
       return this;
     }
 
